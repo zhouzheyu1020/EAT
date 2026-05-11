@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>今天吃什么？</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ffe6f7 0%, #f0faff 100%);
+            gap: 30px;
+            padding: 20px;
+        }
+
+        /* 上方标语文字 */
+        .title-text {
+            font-size: 26px;
+            font-weight: bold;
+            color: #ff6b9d;
+            letter-spacing: 2px;
+        }
+
+        /* 可爱3D骰子 */
+        .dice {
+            width: 140px;
+            height: 140px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 12px 0 #f8d7e4, 
+                        0 18px 30px rgba(0,0,0,0.15);
+            position: relative;
+            padding: 16px;
+            display: grid;
+            grid-template-areas:
+                "a . c"
+                "e g f"
+                "d . b";
+            gap: 14px;
+            border: 3px solid #ffb6c1;
+        }
+
+        /* 可爱圆点（粉色！） */
+        .dot {
+            width: 26px;
+            height: 26px;
+            background: #ff8da1;
+            border-radius: 50%;
+            place-self: center;
+            box-shadow: inset 0 3px 5px rgba(0,0,0,0.15);
+        }
+
+        .dot:nth-child(1) { grid-area: a; }
+        .dot:nth-child(2) { grid-area: b; }
+        .dot:nth-child(3) { grid-area: c; }
+        .dot:nth-child(4) { grid-area: d; }
+        .dot:nth-child(5) { grid-area: e; }
+        .dot:nth-child(6) { grid-area: f; }
+        .dot:nth-child(7) { grid-area: g; }
+
+        /* 可爱按钮 */
+        #rollBtn {
+            padding: 20px 50px;
+            font-size: 24px;
+            font-weight: bold;
+            background: #ff9bbb;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 0 #e47a97, 
+                        0 10px 20px rgba(255,155,187,0.3);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+
+        #rollBtn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 0 #e47a97, 
+                        0 14px 25px rgba(255,155,187,0.4);
+            background: #ff8bad;
+        }
+
+        #rollBtn:active {
+            transform: translateY(2px);
+            box-shadow: 0 3px 0 #e47a97;
+        }
+
+        /* 超级可爱文字提示 */
+        #result {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ff6b9d;
+            background: #ffffff;
+            padding: 22px 45px;
+            border-radius: 30px;
+            box-shadow: 0 8px 0 #f8d7e4, 
+                        0 12px 25px rgba(0,0,0,0.1);
+            border: 3px solid #ffb6c1;
+            text-align: center;
+            animation: bounceIn 0.5s ease;
+            min-height: 50px;
+            max-width: 90%;
+            line-height: 1.4;
+        }
+
+        /* 文字弹跳动画 */
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            60% {
+                transform: scale(1.05) translateY(-5px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 骰子上方添加的文字 -->
+    <div class="title-text">公主好好吃饭，来决定吧</div>
+    <div class="dice" id="dice"></div>
+    <button id="rollBtn">摇骰子🍽️</button>
+    <div id="result">准备开吃！</div>
+
+    <script>
+        const dice = document.getElementById('dice');
+        const rollBtn = document.getElementById('rollBtn');
+        const result = document.getElementById('result');
+
+        const foodMap = {
+            1: "今天吃面条🍜",
+            2: "今天吃米饭🍚",
+            3: "今天吃烤冷面🌮",
+            4: "今天吃馄饨🥟",
+            5: "今天吃汉堡🍔",
+            6: "今天吃水果捞🥝"
+        };
+
+        const diceDots = {
+            1: [7],
+            2: [1, 2],
+            3: [1, 7, 2],
+            4: [1, 2, 3, 4],
+            5: [1, 2, 3, 4, 7],
+            6: [1, 2, 3, 4, 5, 6]
+        };
+
+        function renderDice(num) {
+            dice.innerHTML = '';
+            diceDots[num].forEach(() => {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                dice.appendChild(dot);
+            });
+        }
+
+        rollBtn.addEventListener('click', function() {
+            const num = Math.floor(Math.random() * 6) + 1;
+            renderDice(num);
+            result.textContent = foodMap[num];
+        });
+
+        renderDice(1);
+    </script>
+</body>
+</html>
